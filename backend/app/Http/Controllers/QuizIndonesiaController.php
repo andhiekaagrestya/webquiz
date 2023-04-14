@@ -34,10 +34,10 @@ class QuizIndonesiaController extends Controller
     {
         $quiz = QuizIndonesia::create([
             'question' => $request->question,
-            'a_answer' => $request->a_answer,
-            'a_correct' => $request->a_correct,
-            'b_answer' => $request->b_answer,
-            'b_correct' => $request->b_correct
+            'a_answer' => $request->a['answer'],
+            'a_correct' => $request->a['correct'],
+            'b_answer' => $request->b['answer'],
+            'b_correct' => $request->b['correct']
         ]);
 
         return response()->json([
@@ -107,9 +107,10 @@ class QuizIndonesiaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(QuizIndonesia $quizIndonesia)
+    // Delete Soal by Id
+    public function destroy(QuizIndonesia $quizIndonesia, Request $request)
     {
-        $quizIndonesia->delete();
+        $quizIndonesia->where('id', $request['id'])->delete();
         return response()->json([
             'message' => 'Quiz Deleted'
         ]);

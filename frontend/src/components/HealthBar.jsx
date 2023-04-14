@@ -15,11 +15,13 @@ export default function HealthBar({ lives = 2, score = 255, soal = 21, language 
         </p>
       </div>
       <div className="flex items-center gap-x-2 ">
+      {/* Sisa nyawa */}
         {Array(lives)
           .fill(1)
           .map(() => (
             <RiHeart2Fill className="w-8 h-8 fill-white" />
           ))}
+          {/* Nyawa Yang habis */}
         {Array(3 - lives)
           .fill(1)
           .map(() => (

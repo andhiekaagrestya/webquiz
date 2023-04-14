@@ -10,16 +10,23 @@ import Gameover from '../components/Popup/Gameover';
 import useSound from 'use-sound';
 
 // Import Suara
-import correctmp3 from '../assets/sound/correct.mp3';
-import quizbgmmp3 from '../assets/sound/quizbgm.mp3';
-import wrongmp3 from '../assets/sound/wrong.mp3';
+import correctsound from '/sound/correct.mp3';
+import wrongsound from '/sound/wrong.mp3';
 import Starting from '../components/Starting';
 
 export default function QuizPageIndtoEng() {
   // Variable state untuk lagu
-  const [correct] = useSound(correctmp3);
-  const [wrong] = useSound(wrongmp3);
-  const [bgm, { stop }] = useSound(quizbgmmp3, { volume: 0.1 });
+  const correct = () => {
+    const sound = new Audio(correctsound);
+    sound.volume = 0.5;
+    sound.play();
+  };
+  const wrong = () => {
+    const sound = new Audio(wrongsound);
+    sound.volume = 0.5;
+    sound.play();
+  };
+  const [bgm, { stop }] = useSound('/sound/quizbgm.mp3', { volume: 0.1 });
 
   const [Listscore, setListscore] = useState([{ nama: '', score: 0, language: '' }]);
 
@@ -56,7 +63,7 @@ export default function QuizPageIndtoEng() {
     if (completed) {
       // setSoal(Soal + 1);
       setLives(Lives - 1);
-      setAnswer(2);
+      setAnswer(2); //Menampilkan Pesan Timeout
       setFinish(true);
       return <Timeup className=" my-7 " />;
     }
@@ -159,6 +166,7 @@ export default function QuizPageIndtoEng() {
           ) : Lives == 0 ? (
             <Gameover score={Score} setCompleted={setCompleted} audioStop={stop} />
           ) : !Start ? (
+            //Component Start Button
             <Starting playit={Playit} />
           ) : (
             <div className="h-[33rem] bg-gradient-to-b from-rose-500/60 to-amber-500/60 rounded-2xl">
@@ -169,6 +177,7 @@ export default function QuizPageIndtoEng() {
                 </div>
                 <p className="text-3xl font-thin my-12">{question[Soal].question}</p>
                 <div className="flex items-center justify-center gap-x-2 my-4">
+                {/* Button Pilih Jawaban Kiri */}
                   <div
                     onClick={() => {
                       if (!Finish) {
@@ -182,6 +191,7 @@ export default function QuizPageIndtoEng() {
                     } `}>
                     {question[Soal].a_answer}
                   </div>
+                  {/* Button pilih jawaban kanan */}
                   <div
                     onClick={() => {
                       if (!Finish) {

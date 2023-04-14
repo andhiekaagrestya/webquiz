@@ -48,6 +48,7 @@ export default function CompletedQuiz({ score, languange }) {
           </div>
         </div>
       ) : (
+        //Tampilan Nama
         <div className="text-white flex flex-col items-start w-[20rem] my-4">
           <p className="text-sm px-2">Input Your Name</p>
           <input

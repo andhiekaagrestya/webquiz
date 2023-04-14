@@ -29,14 +29,15 @@ class QuizController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // Nambah 1 Soal
     public function store(Request $request)
     {
         $quiz = Quiz::create([
             'question' => $request->question,
-            'a_answer' => $request->a_answer,
-            'a_correct' => $request->a_correct,
-            'b_answer' => $request->b_answer,
-            'b_correct' => $request->b_correct
+            'a_answer' => $request->a['answer'],
+            'a_correct' => $request->a['correct'],
+            'b_answer' => $request->b['answer'],
+            'b_correct' => $request->b['correct']
         ]);
 
         return response()->json([
@@ -46,6 +47,7 @@ class QuizController extends Controller
         
     }
 
+    // Hit Api Banyak Soal
     public function store_many(Request $request){
         $data = $request->all();
         $final_array = array();
@@ -107,9 +109,10 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Quiz $quiz)
+    // Delete Soal by Id
+    public function destroy(Quiz $quiz, Request $request)
     {
-        $quiz->delete();
+        $quiz->where('id', $request['id'])->delete();
         return response()->json([
             'message' => 'Quiz Deleted'
         ]);
