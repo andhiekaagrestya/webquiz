@@ -12,7 +12,7 @@ class QuizIndonesiaController extends Controller
      */
     public function index()
     {
-        $quiz = QuizIndonesia::inRandomOrder()->limit(30)->get();
+        $quiz = QuizIndonesia::inRandomOrder()->limit(500)->get();
 
         return response()->json([
             'data' => $quiz
@@ -107,7 +107,6 @@ class QuizIndonesiaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // Delete Soal by Id
     public function destroy(QuizIndonesia $quizIndonesia, Request $request)
     {
         $quizIndonesia->where('id', $request['id'])->delete();

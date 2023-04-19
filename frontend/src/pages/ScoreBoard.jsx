@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import axios from 'axios';
 import Moment from 'moment';
+import About from '../components/About/About';
 
 export default function ScoreBoard() {
   const [Listscore, setListscore] = useState([{ nama: '', score: 0, language: '' }]);
   const [Show, setShow] = useState({ start: 0, end: 10 });
+  // Untuk menampilkan popup terkait about
+  const [Showabout, setShowabout] = useState(false);
 
   const nextSlide = () => {
     if (Show.end < Listscore.length) {
@@ -19,15 +22,15 @@ export default function ScoreBoard() {
   };
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/score').then((res) => {
-      console.log(res.data.data);
+    axios.get('https://api.kosaquiz.site/api/score').then((res) => {
       setListscore(res.data.data);
     });
   }, []);
 
   return (
     <div className="w-full h-screen bg-gradient-to-tr  from-rose-50 to-amber-300">
-      <NavigationBar Score={Listscore} />
+      {Showabout ? <About controller={setShowabout} /> : null}
+      <NavigationBar Score={Listscore} aboutController={setShowabout} />
       <div className="w-full mt-8 flex flex-col items-center justify-center">
         <h1 className="text-rose-600 font-bebasneue text-3xl">SCOREBOARD</h1>
         <table className="table-auto w-[95%] sm:w-[40rem] bg-white/50 text-rose-600 font-comforta overflow-hidden">
@@ -42,7 +45,6 @@ export default function ScoreBoard() {
           </thead>
           <tbody>
             {Listscore.slice(Show.start, Show.end).map((e, i) => (
-              // console.log(e);
               <tr className="h-8">
                 <td className="border border-rose-600 text-center">{i + 1 + Show.start}</td>
                 <td className="border border-rose-600 text-center truncate text-ellipsis max-w-[10rem] px-2">

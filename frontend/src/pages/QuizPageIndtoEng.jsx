@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import HealthBar from '../components/HealthBar';
 import Countdown from 'react-countdown';
-import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { AiOutlineCheckCircle, AiOutlineClose, AiOutlineCloseCircle } from 'react-icons/ai';
 import CompletedQuiz from '../components/CompletedQuiz';
 import NavigationBar from '../components/NavigationBar';
 import Gameover from '../components/Popup/Gameover';
@@ -14,11 +14,13 @@ import correctsound from '/sound/correct.mp3';
 import wrongsound from '/sound/wrong.mp3';
 import bgmsound from '/sound/quizbgm.mp3';
 import Starting from '../components/Starting';
+import About from '../components/About/About';
 
 export default function QuizPageIndtoEng() {
+  // Untuk menampilkan popup terkait about
+  const [Showabout, setShowabout] = useState(false);
+
   // Variable state untuk lagu
-  // const [correct] = useSound('/sound/correct.mp3');
-  // const [wrong] = useSound('/sound/wrong.mp3', { volume: 0.5 });
   const [bgm, { stop }] = useSound('/sound/quizbgm.mp3', { volume: 0.1 });
 
   const correct = () => {
@@ -31,17 +33,6 @@ export default function QuizPageIndtoEng() {
     sound.volume = 0.5;
     sound.play();
   };
-
-  // const [Togglemusic, SetTogglemusic] = useState(false);
-  // const setmusic = () => {
-  //   const ismusicplay = !Togglemusic;
-  //   if (ismusicplay) {
-  //     bgmmusic.play();
-  //   } else {
-  //     bgmmusic.pause();
-  //   }
-  //   SetTogglemusic(ismusicplay);
-  // };
 
   const [Listscore, setListscore] = useState([{ nama: '', score: 0, language: '' }]);
 
@@ -79,7 +70,7 @@ export default function QuizPageIndtoEng() {
     if (completed) {
       // setSoal(Soal + 1);
       setLives(Lives - 1);
-      setAnswer(2);
+      setAnswer(2); //Menampilkan Pesan Timeout
       setFinish(true);
       return <Timeup className=" my-7 " />;
     }
@@ -98,7 +89,6 @@ export default function QuizPageIndtoEng() {
   // Fungsi untuk mengecek apakah soal yang terakhir sudah terjawab
   const isLastSoal = () => {
     if (Soal == question.length - 1) {
-      console.log('terprint');
       setCompleted(true);
       return true;
     } else {
@@ -111,8 +101,6 @@ export default function QuizPageIndtoEng() {
 
   // Fungsi untuk mengecek apakah jawaban yang diberikan benar atau salah
   const pilihJawaban = (answer) => {
-    // console.log(answer);
-
     // jika soal yang dipilih adalah benar
     if (answer == 1) {
       setAnswer(1); // Mengubah Answer menjadi 0 yang bertujuan untuk menampilkan pesan benar
@@ -129,7 +117,6 @@ export default function QuizPageIndtoEng() {
 
   const nextSoal = () => {
     const selesai = isLastSoal();
-    console.log(selesai);
     if (selesai) {
       return;
     } else {
@@ -144,21 +131,20 @@ export default function QuizPageIndtoEng() {
     setStart(true);
   };
 
-  // console.log(question.length, Soal);
   useEffect(() => {
     // get Score for navbar
-    axios.get('http://127.0.0.1:8000/api/score').then((res) => {
+    axios.get('https://api.kosaquiz.site/api/score').then((res) => {
       setListscore(res.data.data);
     });
 
     // Mengambil data soal dari dari backend menggunakan axios
-    axios.get('http://localhost:8000/api/quiz-indonesia').then((res) => {
+    axios.get('https://api.kosaquiz.site/api/quiz-indonesia').then((res) => {
       setquestion(res.data.data);
-      setLoading(false);
     });
+    setLoading(false);
 
     return stop;
-  }, [stop]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -171,7 +157,8 @@ export default function QuizPageIndtoEng() {
 
   return (
     <div className="bg-gradient-to-tr  from-rose-50 to-amber-300 w-[100vw] h-full">
-      <NavigationBar Score={Listscore} />
+      {Showabout ? <About controller={setShowabout} /> : null}
+      <NavigationBar Score={Listscore} aboutController={setShowabout} />
       <div className=" flex justify-center relative items-center w-full h-[90vh]">
         <div className=" absolute w-[35rem] h-[35rem] rounded-2xl flex flex-col justify-end bg-white/50 backdrop-blur-md drop-shadow-xl ">
           {Completed ? (
@@ -179,6 +166,7 @@ export default function QuizPageIndtoEng() {
           ) : Lives == 0 ? (
             <Gameover score={Score} setCompleted={setCompleted} audioStop={stop} />
           ) : !Start ? (
+            //Component Start Button
             <Starting playit={Playit} />
           ) : (
             <div className="h-[33rem] bg-gradient-to-b from-rose-500/60 to-amber-500/60 rounded-2xl">
@@ -188,6 +176,7 @@ export default function QuizPageIndtoEng() {
                   <h1>Terjemahkan dalam Bahasa Inggris</h1>
                 </div>
                 <p className="text-3xl font-thin my-12">{question[Soal].question}</p>
+                {/* Button Pilih Jawaban kiri */}
                 <div className="flex items-center justify-center gap-x-2 my-4">
                   <div
                     onClick={() => {
@@ -202,6 +191,7 @@ export default function QuizPageIndtoEng() {
                     } `}>
                     {question[Soal].a_answer}
                   </div>
+                  {/* Button Pilih Jawaban kanan */}
                   <div
                     onClick={() => {
                       if (!Finish) {
@@ -218,7 +208,7 @@ export default function QuizPageIndtoEng() {
                 </div>
                 {Finish ? null : (
                   <div className=" flex-1 w-[15rem] h-[5rem] flex items-center justify-center ${}">
-                    <Countdown date={Date.now() + 15000} renderer={renderer} />
+                    <Countdown date={Date.now() + 10000} renderer={renderer} />
                   </div>
                 )}
                 {Answer == 1 ? (
@@ -228,13 +218,14 @@ export default function QuizPageIndtoEng() {
                   </div>
                 ) : Answer == 0 ? (
                   <div className=" flex-1  text-white flex flex-col items-center w-[15rem] justify-center ">
-                    <AiOutlineCheckCircle className="w-12 h-12 text-red-600 " />
+                    <AiOutlineCloseCircle className="w-12 h-12 text-red-600 " />
                     <p className=" text-white text-xl font-normal ">Jawaban Salah!</p>
                   </div>
                 ) : Answer == 2 ? (
                   <Timeup className=" my-7 " />
                 ) : null}
                 {Finish && Lives >= 1 ? (
+                  //Button Berikutnya
                   <div
                     onClick={() => nextSoal()}
                     className="bg-teal-600 hover:bg-teal-400 rounded-full cursor-pointer duration-200 px-8 py-1">

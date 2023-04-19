@@ -9,19 +9,17 @@ export default function HealthBar({ lives = 2, score = 255, soal = 21, language 
         <IoCheckmarkCircleOutline className="w-10 h-10" />
         <p className="text-white font-medium text-[16px]">{score}</p>
       </div>
-      <div className="text-white">
+      <div className="text-white ">
         <p className="font-medium">
           {language == 0 ? `Soal ke-${soal + 1}` : `Question Number ${soal + 1}`}
         </p>
       </div>
       <div className="flex items-center gap-x-2 ">
-      {/* Sisa nyawa */}
         {Array(lives)
           .fill(1)
           .map(() => (
             <RiHeart2Fill className="w-8 h-8 fill-white" />
           ))}
-          {/* Nyawa Yang habis */}
         {Array(3 - lives)
           .fill(1)
           .map(() => (

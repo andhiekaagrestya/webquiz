@@ -12,7 +12,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quiz = Quiz::inRandomOrder()->limit(30)->get();
+        $quiz = Quiz::inRandomOrder()->limit(500)->get();
         return response()->json([
             'data' => $quiz
         ]) ;
@@ -29,7 +29,6 @@ class QuizController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // Nambah 1 Soal
     public function store(Request $request)
     {
         $quiz = Quiz::create([
@@ -47,7 +46,6 @@ class QuizController extends Controller
         
     }
 
-    // Hit Api Banyak Soal
     public function store_many(Request $request){
         $data = $request->all();
         $final_array = array();
@@ -109,7 +107,6 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // Delete Soal by Id
     public function destroy(Quiz $quiz, Request $request)
     {
         $quiz->where('id', $request['id'])->delete();

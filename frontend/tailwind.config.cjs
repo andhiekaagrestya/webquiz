@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         comforta: ['Comfortaa', 'sans-serif'],
-        bebasneue: ['Bebas Neue', 'sans-serif']
+        bebasneue: ['Bebas Neue', 'sans-serif'],
+        tiltprism: ['Tilt Prism', 'sans-serif']
       }
     }
   },

@@ -3,6 +3,9 @@ import { BsPatchCheckFill } from 'react-icons/bs';
 import { AiOutlineCheckCircle, AiOutlineReload } from 'react-icons/ai';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineAlert } from 'react-icons/ai';
+import { AiOutlineBarcode } from 'react-icons/ai';
+import { AiOutlineUser } from 'react-icons/ai';
 
 export default function CompletedQuiz({ score, languange }) {
   const [Playername, setPlayername] = useState();
@@ -10,10 +13,11 @@ export default function CompletedQuiz({ score, languange }) {
   const navigate = useNavigate();
   const refreshPage = () => {
     navigate(0);
+    
   };
   const submitScore = () => {
     if (!Submited) {
-      axios.post('http://localhost:8000/api/score', {
+      axios.post('https://api.kosaquiz.site/api/score', {
         nama: Playername,
         score: score,
         language: languange
@@ -41,14 +45,13 @@ export default function CompletedQuiz({ score, languange }) {
             <p>Your Score Has Been Submited</p>
           </div>
           <div
-            onClick={refreshPage}
+            // onClick={refreshPage}
             className="flex items-center cursor-pointer bg-white/20 rounded-md px-4 py-1 my-4 gap-x-2 text-white hover:text-rose-600 duration-200">
-            <AiOutlineReload className="w-8 h-8" />
-            <p className="text-2xl font-comforta ">Play Again?</p>
+            <AiOutlineUser className="w-8 h-8" />
+            <a href="https://forms.gle/HcLqyfDGfKCSbCRTA" className="text-2xl font-comforta ">Survei Kepuasan</a>
           </div>
         </div>
       ) : (
-        //Tampilan Nama
         <div className="text-white flex flex-col items-start w-[20rem] my-4">
           <p className="text-sm px-2">Input Your Name</p>
           <input

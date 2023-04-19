@@ -13,13 +13,11 @@ export default function Gameover({ score, setCompleted, audioStop }) {
         <p className="text-neutral-500">Score: {score}</p>
         <p className="text-neutral-700 font-comforta text-5xl my-4">GAME OVER</p>
         <div className="flex my-2 gap-x-2">
-        {/* Play Again */}
           <div
             onClick={refreshPage}
             className="px-4 py-1 bg-neutral-200/50 rounded-md hover:text-rose-600 cursor-pointer font-comforta hover:bg-neutral-400/50 duration-200">
             Play Again
           </div>
-          {/* Submit Score */}
           <div
             onClick={() => setCompleted(true)}
             className="px-4 py-1 bg-neutral-200/50 rounded-md hover:text-rose-600 cursor-pointer font-comforta hover:bg-neutral-400/50 duration-200">
